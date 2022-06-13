@@ -1,26 +1,42 @@
 #%%
-import numpy as np 
+import numpy as np
 
+#%%
 def eggholder(X):
     x1 = X[0]
     x2 = X[1]
     f = -(x2+47)*np.sin(np.sqrt(np.abs(x1/2+(x2+47)))) - x1*np.sin(np.sqrt(np.abs(x1-(x2+47))))
     return np.around(f, decimals=4)
 
-
-#%% Teste SCE
-import sce
-import plotly.graph_objects as go
-fig = go.Figure()
-for i in range(3):
-    D, Fs = sce.sce([-512, -512], [512, 512], eggholder, itmax=500, p=20)
-    
-    minimos  = [np.min(i) for i in Fs]
-    medias = [np.mean(i) for i in Fs]
-
-    fig.add_trace(go.Scatter(x=np.arange(1, len(Fs)+1), y=minimos, name='Pop mínimos'))
-    fig.add_trace(go.Scatter(x=np.arange(1, len(Fs)+1), y=medias, name='Pop médias'))
-
-fig.show()
-
 #%%
+if __name__ == '__main__':
+    
+    import matplotlib.pyplot as plt
+    fig, axs = plt.subplots(2, 2)
+    
+    repeticoes = 30
+    iteracoes = 100
+    idx = np.arange(1, iteracoes+1)
+    # Teste SCE - Arlan
+
+
+    # Teste ALO - Valdecy
+    import alo_valdecy
+    for i in range(repeticoes):
+        
+        antlions, minimos, medias, elite = alo_valdecy.ant_lion_optimizer(
+            colony_size = 80,
+            min_values = [-512,-512],
+            max_values = [512,512],
+            iterations = iteracoes,
+            target_function = eggholder)
+        axs[0,0].plot(idx, minimos[-iteracoes:], color='red')
+        axs[1,0].plot(idx, medias[-iteracoes:], color='blue')
+        
+    [i.set_title('ALO Valdecy') for i in axs[:,0]]
+    for ax in axs.flatten():
+        ax.axhline(y=-959.6407, color='black')
+        ax.set_ylim(-1000, 0)
+    # Teste ALO - Arlan
+    plt.show()
+# %%
