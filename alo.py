@@ -1,5 +1,5 @@
 '''
-Algoritmo Ant Lion Optimizer (ALO) - Mirjalili (2015)
+Ant Lion Optimizer (ALO) - Mirjalili (2015)
 https://doi.org/10.1016/j.advengsoft.2015.01.010
 Implementacao Python a partir do codigo oficial em Matlab, disponivel em https://seyedalimirjalili.com/alo
 Implementação Python - Scortegagna, jun/2022

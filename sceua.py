@@ -1,19 +1,12 @@
 '''
-Referencia usada na implementacao - Naeini (2019)
+Shuffled Complex Evolution - University of Arizona (SCE-UA)
+Duan, 1992 (https://doi.org/10.1029/91WR02985)
+Implementacao em Python por Arlan Scortegagna, junho de 2022
+Tendo o objetivo de reproduzir o codigo oficial em Matlab (https://www.mathworks.com/matlabcentral/fileexchange/7671-shuffled-complex-evolution-sce-ua-method)
 '''
 
-#%% 
-from ast import Break
 import numpy as np
-def eggholder(X):
-    x1 = X[0]
-    x2 = X[1]
-    f = -(x2+47)*np.sin(np.sqrt(np.abs(x1/2+(x2+47)))) - x1*np.sin(np.sqrt(np.abs(x1-(x2+47))))
-    eggholder.counter += 1
-    return f
 
-
-#%%
 def cceua(C, m, q, beta, alpha, fobj, UB, LB, n):
     
     # Loop de selecao de pais para compor os subcomplexos B (controlado por beta)
@@ -61,8 +54,7 @@ def cceua(C, m, q, beta, alpha, fobj, UB, LB, n):
     
     return C
 
-#%%
-def sceua(fobj, UB, LB, k, t_max, m=None, q=None, beta=None, alpha=None, seed=None):
+def executar(fobj, UB, LB, k, t_max, m=None, q=None, beta=None, alpha=None, seed=None):
 
     # Ajustes
     fobj.counter = 0
@@ -80,6 +72,7 @@ def sceua(fobj, UB, LB, k, t_max, m=None, q=None, beta=None, alpha=None, seed=No
     if beta is None:
         beta = 2*n + 1
     P = [2*(m+1-i)/(m*(m+1)) for i in range(1, m+1)]
+    minimos = []
     
     # Inicializacao
     t = 0
@@ -89,10 +82,8 @@ def sceua(fobj, UB, LB, k, t_max, m=None, q=None, beta=None, alpha=None, seed=No
         D[i,:-1] = (UB-LB)*np.random.rand(n) + LB
         D[i,-1] = fobj(D[i,:-1])
     D = D[np.argsort(D[:,-1])]
+    minimos.append(D[0,-1])
     
-    print(t)
-    print(D)
-
     # Loop principal
     while (t < t_max):
         t+=1
@@ -102,13 +93,5 @@ def sceua(fobj, UB, LB, k, t_max, m=None, q=None, beta=None, alpha=None, seed=No
             I = [i+k*(j-1)-1 for j in range(1, m+1)]
             D[I,:] = cceua(D[I,:], m, q, beta, alpha, fobj, UB, LB, n)
         D = D[np.argsort(D[:,-1])]
-        
-        print(t)
-        print(D)
-        
-    return D, fobj.counter
-
-#%%
-D, count = sceua(eggholder, [512, 512], [-512, -512], 4, 5, seed=666)
-
-# %%
+        minimos.append(D[0,-1])
+    return D, fobj.counter, minimos

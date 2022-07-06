@@ -15,6 +15,7 @@ def bukin(X):
     p2 = 0.01*np.abs(x1+10)
     f = p1 + p2
     return f
+
 def drop_wave(X):
     # UB = [5.12, 5.12]
     # LB = [-5.12, -5.12]
@@ -26,6 +27,7 @@ def drop_wave(X):
     p2 = 0.5*(x1**2+x2**2) + 2
     f = -p1/p2
     return f
+
 def eggholder(X):
     # UB = [512, 512]
     # LB = [-512, -512]
@@ -36,7 +38,9 @@ def eggholder(X):
     p1 = -(x2+47)*np.sin(np.sqrt(np.abs(x1/2+(x2+47))))
     p2 = - x1*np.sin(np.sqrt(np.abs(x1-(x2+47))))
     f = p1 + p2
+    eggholder.counter += 1
     return f
+
 def shubert(X):
     # UB = [5.12, 5.12]
     # LB = [-5.12, -5.12]
@@ -62,6 +66,7 @@ def six_hump_camel(X):
     f = p1 + p2
     return f
 # Funcoes multidimensionais
+
 def ackley(X):
     # UB = [32.768, ..., 32.768]
     # LB = [-32.768, ..., -32.768]
@@ -75,6 +80,7 @@ def ackley(X):
     p2 = -np.exp(1/d*np.sum(np.cos(c*X))) + a + np.exp(1)
     f = p1+ p2
     return f
+
 def griewank(X):
     # UB = [600, ..., 600]
     # LB = [-600, ..., -600]
@@ -87,6 +93,7 @@ def griewank(X):
         prod *= np.cos(X[i]/np.sqrt(i+1))
     f = soma - prod + 1
     return f
+
 def schwefel(X):
     # UB = [500, ..., 500]
     # LB = [-500, ..., -500]
@@ -99,27 +106,39 @@ def schwefel(X):
     f = 418.9829*d - soma
     return f
 
+# if __name__ == '__main__':
+    
+#     import alo
+#     import matplotlib.pyplot as plt 
+    
+#     fobj = eggholder
+#     _, _, X_geracoes, F_geracoes = alo.alo(fobj, [512,512], [-512,-512], 10, 500)
+    
+    
+#     # Plot
+#     for iteracao in range(1,11):
+#         X1, X2 = np.meshgrid(np.linspace(-512,512,100), np.linspace(-512,512,100))
+#         Z = np.empty((X1.shape[0], X1.shape[1]))
+#         for i in range(X1.shape[0]):
+#             for j in range(X1.shape[1]):
+#                 Z[i,j] = eggholder([X1[i,j], X2[i,j]])
+#         fig,ax=plt.subplots(1,1)
+#         cp = ax.contourf(X1, X2, Z)
+#         otimo = [512, 404.2319]
+#         ax.scatter(otimo[0], otimo[1], color='red')
+#         ax.set_title(f'Iteracao {iteracao}')
+#         ax.scatter(X_geracoes[iteracao-1][:,0], X_geracoes[iteracao-1][:,1], color='black')
+#         fig.colorbar(cp)
+#         fig.savefig(f'fig_iteracao{iteracao}.png')
+
 if __name__ == '__main__':
     
-    import alo
+    # Teste SCE-UA
+    import sceua
+    k = 10
+    D, count, minimos = sceua.executar(eggholder, [512, 512], [-512, -512], k, 10, seed=12)
     import matplotlib.pyplot as plt 
-    
-    fobj = eggholder
-    _, _, X_geracoes, F_geracoes = alo.alo(fobj, [512,512], [-512,-512], 10, 500)
-    
-    
-    # Plot
-    for iteracao in range(1,11):
-        X1, X2 = np.meshgrid(np.linspace(-512,512,100), np.linspace(-512,512,100))
-        Z = np.empty((X1.shape[0], X1.shape[1]))
-        for i in range(X1.shape[0]):
-            for j in range(X1.shape[1]):
-                Z[i,j] = eggholder([X1[i,j], X2[i,j]])
-        fig,ax=plt.subplots(1,1)
-        cp = ax.contourf(X1, X2, Z)
-        otimo = [512, 404.2319]
-        ax.scatter(otimo[0], otimo[1], color='red')
-        ax.set_title(f'Iteracao {iteracao}')
-        ax.scatter(X_geracoes[iteracao-1][:,0], X_geracoes[iteracao-1][:,1], color='black')
-        fig.colorbar(cp)
-        fig.savefig(f'fig_iteracao{iteracao}.png')
+    plt.plot(minimos, color='blue')
+    plt.suptitle(f'Complexos = {k}')
+    plt.axhline(-959, color='red')
+    plt.show()
