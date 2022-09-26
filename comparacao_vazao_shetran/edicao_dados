@@ -6,7 +6,7 @@ Created on Mon Sep 26 09:33:01 2022
 @author: amandamatos
 """
 
-#%% Importanto bibliotecas
+#%% Importando bibliotecas
 import pandas as pd
 from datetime import datetime
 from plotly.subplots import make_subplots
@@ -36,7 +36,7 @@ df_sim = pd.read_csv('uv_vazao_simulada.csv')
 df_Q = pd.concat([df_obs, df_sim], axis = 1)
 df_Q = df_Q.set_index(['datahora'])
 
-#%% Plotando com plotly - subplots: chuva-vazao
+#%% Plotando com plotly - subplots: chuva-vazão
 
 fig = make_subplots(rows=3, cols=1, shared_xaxes=True, specs=[[{'rowspan': 1, 'colspan': 1}],[{'rowspan': 2, 'colspan': 1}],[{'rowspan': 0, 'colspan': 0}]])
 fig.add_trace(go.Scatter(x=df_media_chuva.index, y=df_media_chuva['media'], name="PME (mm)"), row=1, col=1)
