@@ -9,13 +9,13 @@ import plotly.graph_objects as go
 latitude = -25.86
 longitude = -48.57
 nome = 'Guaratuba'
-emissao = '2022-11-26'
+emissao = '2022-11-27'
 
 #%% Curitiba 
 latitude = -25.4
 longitude = -49.2
 nome = 'Curitiba'
-emissao = '2022-11-26'
+emissao = '2022-11-27'
 
 #%% Processa os arquivos da previsao
 l_cf = []
@@ -45,7 +45,7 @@ df_pivotado.to_csv('dados.csv')
 
 #%%
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=df_pivotado.index, y=df_pivotado[i], legendgroup='Conjunto', name='Conjunto', line=dict(color='darkgray', width=1)))
+fig.add_trace(go.Scatter(x=df_pivotado.index, y=df_pivotado[1], legendgroup='Conjunto', name='Conjunto', line=dict(color='darkgray', width=1)))
 for i in range(2, 51):
     fig.add_trace(go.Scatter(x=df_pivotado.index, y=df_pivotado[i], legendgroup='Conjunto', showlegend=False, line=dict(color='darkgray', width=1)))
 fig.add_trace(go.Scatter(x=df_pivotado.index, y=df_pivotado[0], name='Controle', legendrank=2, line=dict(color='blue', width=2)))
